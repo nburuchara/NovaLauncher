@@ -10,8 +10,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 
 
-class AppAdapter(private val context: Context, private var appList: ArrayList<AppObject>) : BaseAdapter() {
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+class AppAdapter(
+    private val context: Context,
+    val appList: ArrayList<AppObject>
+) : BaseAdapter() {
+    override fun getView(position: Int, convertView: View?,  parent: ViewGroup?): View {
         val v : View
         if (convertView == null) {
             var inflater : LayoutInflater = this@AppAdapter.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -22,7 +25,7 @@ class AppAdapter(private val context: Context, private var appList: ArrayList<Ap
         val mImage : ImageView = v.findViewById(R.id.myImage)
         val mLabel : TextView = v.findViewById(R.id.myLabel)
 
-        val mLayout : LinearLayout = v.findViewById(R.id.layout)
+        val mLayout : LinearLayout = v.findViewById<LinearLayout>(R.id.layout)
         mImage.setImageDrawable(appList.get(position).getImage())
         mLabel.setText(appList.get(position).getName())
 
