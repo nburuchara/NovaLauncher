@@ -11,9 +11,7 @@ import android.widget.TextView
 
 
 class AppAdapter(
-    private val context: Context,
-    val appList: ArrayList<AppObject>
-) : BaseAdapter() {
+    private val context: Context, val appList: ArrayList<AppObject>, private val cellHeight: Int) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?,  parent: ViewGroup?): View {
         val v : View
         if (convertView == null) {
@@ -26,15 +24,22 @@ class AppAdapter(
         val mLabel : TextView = v.findViewById(R.id.myLabel)
 
         val mLayout : LinearLayout = v.findViewById<LinearLayout>(R.id.layout)
+        val lp : LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, cellHeight)
+
+        mLayout.layoutParams = lp
         mImage.setImageDrawable(appList.get(position).getImage())
         mLabel.setText(appList.get(position).getName())
 
         mLayout.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View?) {
-                val launchAppIntent  = context.packageManager.getLaunchIntentForPackage(appList.get(position).getPackageName())
-                if (launchAppIntent != null) {
-                    context.startActivity(launchAppIntent)
-                }
+                (context as MainActivity).itemPress(appList.get(position))
+            }
+        })
+
+        mLayout.setOnLongClickListener(object: View.OnLongClickListener {
+            override fun onLongClick(v: View?): Boolean {
+                (context as MainActivity).itemLongPress(appList.get(position))
+                return true
             }
         })
         return v
